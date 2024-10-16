@@ -157,7 +157,8 @@ This documentation provides an overview of various custom Nuke tools developed t
 3. Add the following line to your `init.py` or `menu.py`:
 
 ```python
-nuke.pluginAddPath("/path/to/custom_tools")
+
+nuke.pluginAddPath("Y:/20105_Pysna_film/tmp/martin.tomek/scripts/")
 ```
 
 4. Restart Nuke
