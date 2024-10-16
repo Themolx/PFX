@@ -9,97 +9,152 @@ By Martin Tomek
 ## Table of Contents
 - [Overview](#overview)
 - [Tools](#tools)
-  - [1. Nuke Grab Tool](#1-nuke-grab-tool)
-  - [2. Sequence Loader](#2-sequence-loader)
-  - [3. Mask Checker](#3-mask-checker)
-  - [4. Lock Cryptos](#4-lock-cryptos)
-  - [5. ZDefocus Controller](#5-zdefocus-controller)
-  - [6. Node Management Suite](#6-node-management-suite)
-    - [Dynamic Shuffle Labeler](#dynamic-shuffle-labeler)
-    - [CryptoMatte Tool](#cryptomatte-tool)
-    - [Animated Node Labeler](#animated-node-labeler)
+  - [1. Load Lightning Render](#1-load-lightning-render)
+  - [2. Light Shuffler](#2-light-shuffler) 
+  - [3. Sequence Loader](#3-sequence-loader)
+  - [4. Appender Loader](#4-appender-loader)
+  - [5. Reduce Noise Backdrop](#5-reduce-noise-backdrop)
+  - [6. New Denoise Comp](#6-new-denoise-comp)
+  - [7. Mask Checker - Grade](#7-mask-checker---grade)
+  - [8. Mask Checker - Premult](#8-mask-checker---premult)
+  - [9. ZDefocus Checker](#9-zdefocus-checker)
+  - [10. Cryptomatte Tools](#10-cryptomatte-tools)
+- [Project Setup](#project-setup)
+  - [Setup 2K DCP Project](#setup-2k-dcp-project)
+  - [Viewer Process Rec.709 (ACES)](#viewer-process-rec709-aces) 
+  - [Flipbook Default LUT](#flipbook-default-lut)
 - [Installation](#installation)
 - [Conclusion](#conclusion)
 
 ## Overview
 
-As a Compositor and Technical Director, I've developed various tools to enhance workflow efficiency and solve common problems in Nuke compositing pipelines. This documentation outlines the functionality and benefits of each tool.
+This documentation provides an overview of various custom Nuke tools developed to streamline compositing workflows and solve common pipeline challenges. These tools aim to improve efficiency, consistency, and quality control in daily compositing tasks.
 
 ## Tools
 
-### 1. Nuke Grab Tool
+### 1. Load Lightning Render
 
-- **Problem Solved**: Difficulty in organizing nodes when zoomed out
+- **Problem Solved**: Difficulty in locating and loading the latest lightning render layers
 - **Key Features**:
-  - Blender-inspired 'grab' functionality
-  - Keyboard shortcut activation ('E')
-  - Confirm with left-click or Enter, cancel with Esc
+  - Automatic detection of the latest render version
+  - Creation of Read nodes for each layer
+  - Neat arrangement of nodes
+  - Frame range information
+  - Support for GUI and non-GUI modes
 
-### 2. Sequence Loader
+### 2. Light Shuffler
 
-- **Problem Solved**: Time-consuming manual import of multiple shots
+- **Problem Solved**: Time-consuming manual splitting of light channels
+- **Key Features**: 
+  - Automatic splitting of light channels from a selected node
+  - Creation of Shuffle and Remove nodes for each channel
+  - Exclusion of 'lighting' and 'lightning' channels
+  - Gray backdrop for generated nodes
+
+### 3. Sequence Loader
+
+- **Problem Solved**: Tedious manual loading of multiple sequences
 - **Key Features**:
-  - Automatic sequence detection
-  - Multi-sequence support
-  - Consistent arrangement for review
+  - Loading of multiple sequences
+  - Creation of Read nodes for each shot
+  - Addition of text overlays with dynamic labels
+  - Generation of a ContactSheet for easy review
+  - Strict loading of denoise renders when selected
+  - Smaller, gray backdrop
+  - Dimmer colors for each sequence
 
-### 3. Mask Checker
+### 4. Appender Loader
 
-- **Problem Solved**: Error-prone manual inspection of mask channels
+- **Problem Solved**: Difficulty in quickly reviewing multiple shots
 - **Key Features**:
-  - Automated mask verification
-  - Grade node integration for enhanced visibility
+  - Loading of multiple sequences
+  - Creation of Read nodes for each shot
+  - Generation of a single AppendClip node for easy review
+  - "Play" button for launching the AppendClip in Flipbook
 
-### 4. Lock Cryptos
+### 5. Reduce Noise Backdrop
 
-- **Problem Solved**: Unexpected Cryptomatte layer changes causing errors
+- **Problem Solved**: Difficulty in identifying Reduce Noise v5 nodes
 - **Key Features**:
-  - Automatic Cryptomatte detection
-  - Layer locking mechanism
-  - Dynamic labeling
+  - Automatic detection of Reduce Noise v5 nodes
+  - Placement of a red backdrop under each node
+  - Reporting of the total number of nodes found
 
-### 5. ZDefocus Controller
+### 6. New Denoise Comp
 
-- **Problem Solved**: Inconsistent management of multiple defocus nodes
+- **Problem Solved**: Time-consuming setup of a new denoise comp
 - **Key Features**:
-  - Centralized control interface
-  - Automatic camera integration
-  - Render farm compatibility
+  - Automatic import of the latest regular comp file
+  - Setup of the 2K DCP project
+  - Finding mismatched ZDefocus nodes
+  - Checking for white alpha and creating necessary nodes
 
-### 6. Node Management Suite
+### 7. Mask Checker - Grade
 
-An integrated suite of tools for enhanced node organization and management.
-
-#### Dynamic Shuffle Labeler
-
-- **Problem Solved**: Time-consuming manual labeling of Shuffle nodes
+- **Problem Solved**: Difficulty in verifying mask channels
 - **Key Features**:
-  - Automatic labeling with input channel
-  - Postage stamp activation for non-RGBA shuffles
-  - Automatic keep node for RGBA channels
+  - Automatic detection of mask channels from a selected node
+  - Creation of Shuffle nodes for each mask channel
+  - Application of a Grade node with increased white value
+  - Series connection of Grade nodes
+  - Output postage stamp for the final result
 
-#### CryptoMatte Tool
+### 8. Mask Checker - Premult
 
-- **Problem Solved**: Unclear labeling and RGBA output issues in CryptoMatte nodes
+- **Problem Solved**: Difficulty in checking mask channels with premultiplication
 - **Key Features**:
-  - Dynamic labeling with layer and matte information
-  - Automatic RGBA preservation
-  - Intelligent node positioning
+  - Automatic detection of mask channels from a selected node
+  - Creation of a "hero" Dot node for the beauty pass
+  - Creation of Shuffle and Premult nodes for each mask channel
+  - Individual premultiplication of each mask channel with the beauty pass
 
-#### Animated Node Labeler
+### 9. ZDefocus Checker
 
-- **Problem Solved**: Difficulty in identifying animated nodes
+- **Problem Solved**: Inconsistent values in ZDefocus nodes
 - **Key Features**:
-  - Automatic animation detection
-  - Mix value display
-  - Color coding for easy identification
-  - Toggleable functionality
+  - Automatic detection of PxF_ZDefocusHERO nodes
+  - Analysis of key knob values (fStop, focalDistance, focalLength, filmBack)
+  - Identification of nodes with values differing from the most common value
+  - Reporting of mismatched nodes and their values
+
+### 10. Cryptomatte Tools
+
+- **Problem Solved**: Inconsistent Cryptomatte layer settings
+- **Key Features**:
+  - Automatic detection of the correct Cryptomatte layer based on expressions
+  - Locking of the cryptoLayer knob to prevent accidental changes
+  - Updating of node labels based on the detected layer
+
+## Project Setup
+
+### Setup 2K DCP Project
+
+- **Problem Solved**: Inconsistent project settings
+- **Key Features**:
+  - Automatic setup of a 2K DCP project (2048x1080, 1.0 pixel aspect ratio)
+  - Creation of the format if it doesn't exist
+  - Locking of the frame range
+
+### Viewer Process Rec.709 (ACES)
+
+- **Problem Solved**: Inconsistent color space settings in Viewer nodes
+- **Key Features**:
+  - Automatic setting of the Viewer Process to Rec.709 (ACES)
+  - Application to all existing Viewer nodes
+  - Creation of a new Viewer node if none exist
+
+### Flipbook Default LUT
+
+- **Problem Solved**: Inconsistent LUT settings in Flipbook
+- **Key Features**:
+  - Setting the default LUT for Flipbook to Rec.709 (ACES)
+  - Overriding the Flipbook dialog to ensure the setting is applied
 
 ## Installation
 
 1. Download the tools package
-2. Place scripts in your Nuke plugins directory
-3. Add to your `init.py`:
+2. Place the Python scripts in your Nuke plugins directory
+3. Add the following line to your `init.py` or `menu.py`:
 
 ```python
 nuke.pluginAddPath("/path/to/custom_tools")
@@ -109,6 +164,7 @@ nuke.pluginAddPath("/path/to/custom_tools")
 
 ## Conclusion
 
-These tools represent a comprehensive approach to solving common VFX production challenges. They offer significant time savings, improved consistency, and enhanced quality control in daily tasks. As a Technical Director, I remain committed to refining and expanding this toolkit based on user feedback and evolving production needs.
+These custom Nuke tools provide a comprehensive solution to various compositing challenges, improving efficiency, consistency, and quality control in daily tasks. They automate repetitive processes, ensure consistent settings, and enhance the user experience.
 
-Feel free to reach out with questions, suggestions, or specific workflow challenges that might benefit from similar custom solutions.
+As a Technical Director, I remain committed to refining and expanding this toolkit based on user feedback and evolving production needs. Feel free to reach out with questions, suggestions, or specific workflow challenges that might benefit from similar custom solutions.
+
