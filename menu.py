@@ -1,13 +1,11 @@
 # Import the script modules
 
 import nuke
-import cryptotools
 import projectsetup
 import maskcheckergrade
 import maskcheckerpremult
 import sequenceloader
 import AppenderLoader
-import zdefocuschecker
 import LoadLightningRender
 import LightShuffler
 import ReduceNoiseBackdrop
@@ -31,16 +29,11 @@ m.addCommand("Mask Checker Grade", maskcheckergrade.mask_channel_splitter_with_g
 m.addCommand("Mask Checker Premult", maskcheckerpremult.mask_channel_splitter_with_individual_premults_and_hero_dot, icon="Shuffle.png")
 m.addCommand("MultiSequence Loader", sequenceloader.load_sequence_and_create_contact_sheet, icon="Read.png")
 m.addCommand("Appender Loader", AppenderLoader.load_sequence_and_create_append_clip, icon="Camera.png")
-#m.addCommand("Find Wrong PxF_ZDefocusHERO Nodes", zdefocuschecker.find_wrong_zdefocus_nodes, icon="Viewer.png")
-#m.addCommand("Lock Cryptomattes", cryptotools.process_cryptomattes, icon="Cryptomatte.png")
 m.addCommand("Reduce Noise Backdrops",ReduceNoiseBackdrop.highlight_reduce_noise_nodes_with_backdrops, icon="CopyBBox.png")
 m.addCommand("NewDenoiseComp",NewDenoiseComp.main, icon="Assert.png")
 
 
 
-#nuke.menu('Nuke').addCommand('Custom/Load Latest Renders', find_latest_renders)
-#m.addCommand("Name Shuffles", "process_all_shuffles('[value in1]')", icon="Shuffle.png")
-#m.addCommand("Create ZDefocus Controller", "create_zdefocus_controller()", icon="Axis.png")
 
 # Wind integration (if needed)
 try:
@@ -72,6 +65,6 @@ set_default_flipbook_lut()
 
 
 print("Uz to bude")
-nuke.tprint("Snazim se co nejrychleji")
+nuke.tprint("Loaded scripts made by Martin Tomek")
 
 
